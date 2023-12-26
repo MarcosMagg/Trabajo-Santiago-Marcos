@@ -1,20 +1,41 @@
-var builder = WebApplication.CreateBuilder(args);
+using Trabajo_Santiago_Marcos.Repository;
+using Trabajo_Santiago_Marcos.Service;
+using Trabajo_Santiago_Marcos.Service.Interface;
+using Microsoft.EntityFrameworkCore;
 
-// Add services to the container.
+namespace Trabajo_Santiago_Marcos
+{
+    public class program
+    {
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-var app = builder.Build();
-
+        public static void Main(string[] args)
+        {
 
 
-app.UseHttpsRedirection();
+            var builder = WebApplication.CreateBuilder(args);
 
-app.UseAuthorization();
 
-app.MapControllers();
+            builder.Services.AddControllers();
+            builder.Services.AddSwaggerGen();
 
-app.Run();
+            builder.Services.AddDbContext<ReservaRestaurantContext>(
+            options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+            builder.Services.AddScoped<IReservaService, ReservaService>();  
+
+            var app = builder.Build();
+
+
+
+            app.UseHttpsRedirection();
+
+            app.UseAuthorization();
+            app.UseSwagger();
+            app.UseSwaggerUI();
+
+            app.MapControllers();
+
+            app.Run();
+        }
+    }
+}

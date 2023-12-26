@@ -16,7 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Domain\DTO\" />
     <Folder Include="Domain\Request\" />
   </ItemGroup>
 
